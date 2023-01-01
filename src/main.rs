@@ -48,14 +48,13 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let activities = get_fit_files(&args[1]).unwrap();
-    let mut lengths = Vec::new();
 
     for activity in &activities {
         if is_running(activity) {
             let session = activity.iter().find(|r| r.kind() == fitparser::profile::MesgNum::Session).unwrap();
             let value_opt = get_field_by_name(session, "total_elapsed_time").map(|f| f.value());
             if let Some(fitparser::Value::Float64(d)) = value_opt {
-                lengths.push((d/60.0) as usize);
+                println!("{}", (d/60.0) as usize);
             }
         }
     }
